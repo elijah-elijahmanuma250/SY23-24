@@ -1,6 +1,15 @@
-﻿Public Class Form1
-    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+﻿Imports System.IO
 
+Public Class Form1
+    Dim records(50) As String
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        If IO.File.Exists("data.txt") Then
+            Dim infile As New StreamReader("data.txt")
+            Dim R = infile.ReadLine
+            records(0) = infile.ReadLine
+            records(1) = infile.ReadLine
+            infile.Close()
+        End If
     End Sub
 
     Private Sub NewToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NewToolStripMenuItem.Click
