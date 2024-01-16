@@ -1,17 +1,9 @@
 ﻿Imports System.IO
+Imports System.Security.Cryptography
+Imports System.Security.Cryptography.X509Certificates
 
 Public Class Form1
     Dim records(50) As String
-    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        If IO.File.Exists("data.txt") Then
-            Dim infile As New StreamReader("data.txt")
-            Dim R = infile.ReadLine
-            records(0) = infile.ReadLine
-            records(1) = infile.ReadLine
-            infile.Close()
-        End If
-    End Sub
-
     Private Sub NewToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NewToolStripMenuItem.Click
         field1.Text = ""
         field2.Text = ""
@@ -43,5 +35,26 @@ Public Class Form1
 
     Private Sub OpenFileDialog1_FileOk(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles OpenFileDialog1.FileOk
         PictureBox1.Load(OpenFileDialog1.FileName)
+    End Sub
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        If IO.File.Exists("data.txt") Then
+            Dim infile As New StreamReader("data.txt")
+            records(0) = infile.ReadLine
+            infile.Close()
+            showrecord(0)
+        End If
+
+    End Sub
+    Public Sub showrecord(index As Integer)
+        Dim feilds() As String
+        feilds = records(index).Split("|")
+        field1.Text = feilds(0)
+        field2.Text = feilds(1)
+        field3.Text = feilds(2)
+        field4.Text = feilds(3)
+        field5.Text = feilds(4)
+        If File.Exists(feilds(5)) Then
+            PictureBox1.Load(feilds(5))
+        End If
     End Sub
 End Class
