@@ -4,6 +4,8 @@ Imports System.Security.Cryptography.X509Certificates
 
 Public Class Form1
     Dim records(50) As String
+    Dim COUNT As Integer
+    Dim CURRENT As Integer
     Private Sub NewToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NewToolStripMenuItem.Click
         field1.Text = ""
         field2.Text = ""
@@ -39,7 +41,10 @@ Public Class Form1
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         If IO.File.Exists("data.txt") Then
             Dim infile As New StreamReader("data.txt")
-            records(0) = infile.ReadLine
+            While Not infile.EndOfStream
+                records(COUNT) = infile.ReadLine
+                COUNT = COUNT + 1
+            End While
             infile.Close()
             showrecord(0)
         End If
@@ -47,7 +52,9 @@ Public Class Form1
     End Sub
     Public Sub showrecord(index As Integer)
         Dim feilds() As String
-        feilds = records(index).Split("|")
+        If records(index) <> Nothing Then
+
+            feilds = records(index).Split("|")
         field1.Text = feilds(0)
         field2.Text = feilds(1)
         field3.Text = feilds(2)
@@ -55,6 +62,32 @@ Public Class Form1
         field5.Text = feilds(4)
         If File.Exists(feilds(5)) Then
             PictureBox1.Load(feilds(5))
+        End If
+        End If
+    End Sub
+
+    Private Sub first_Click(sender As Object, e As EventArgs) Handles first.Click
+        CURRENT = 0
+        showrecord(CURRENT)
+    End Sub
+
+    Private Sub last_Click(sender As Object, e As EventArgs) Handles last.Click
+        CURRENT = COUNT - 1
+        showrecord(CURRENT)
+    End Sub
+
+    Private Sub previous_Click(sender As Object, e As EventArgs) Handles previous.Click
+        If CURRENT > 0 Then
+            CURRENT = CURRENT - 1
+            showrecord(CURRENT)
+
+        End If
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        If CURRENT < COUNT - 1 Then
+            CURRENT = CURRENT + 1
+            showrecord(CURRENT)
         End If
     End Sub
 End Class
